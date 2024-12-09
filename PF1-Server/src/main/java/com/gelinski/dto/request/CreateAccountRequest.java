@@ -11,12 +11,13 @@ import java.util.stream.Stream;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class LoginRequest extends BaseRequestDTO {
+public class CreateAccountRequest extends BaseRequestDTO {
     private String user;
     private String password;
+    private String name;
 
     public Boolean fieldsMissing() {
-        return Stream.of(user, password)
+        return Stream.of(user, password, name)
                 .anyMatch(field -> Objects.isNull(field) || field.isBlank());
     }
 }
