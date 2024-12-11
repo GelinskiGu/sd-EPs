@@ -1,4 +1,4 @@
-package com.gelinski.dto;
+package com.gelinski.dto.response;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

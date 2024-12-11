@@ -8,7 +8,7 @@ import java.util.Arrays;
 @Getter
 @RequiredArgsConstructor
 public enum OperationEnum {
-    LOGIN(5), SIGN_UP(1), LOGOUT(6);
+    LOGIN(5), SIGN_UP(1), LOGOUT(6), READ_ACCOUNT(2), UPDATE_ACCOUNT(3), DELETE_ACCOUNT(4);
 
     private final Integer op;
 

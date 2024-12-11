@@ -4,5 +4,5 @@ import com.gelinski.dto.BaseResponseDTO;
 
 import java.io.Serializable;
 
-public class LogoutResponse extends BaseResponseDTO implements Serializable {
+public class CreateAccountResponse extends BaseResponseDTO implements Serializable {
 }

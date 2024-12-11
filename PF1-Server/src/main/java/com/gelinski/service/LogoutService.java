@@ -6,7 +6,7 @@ import com.gelinski.dto.response.LogoutResponse;
 
 public class LogoutService {
     public LogoutResponse logout(LogoutRequest request) {
-        if (request.fieldsMissing()) {
+        if (Boolean.TRUE.equals(request.fieldsMissing())) {
             LogoutResponsesEnum fieldsMissing = LogoutResponsesEnum.FIELDS_MISSING;
             return getLogoutResponse(fieldsMissing);
         }

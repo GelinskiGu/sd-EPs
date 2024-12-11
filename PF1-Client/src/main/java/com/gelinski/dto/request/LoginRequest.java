@@ -1,6 +1,5 @@
 package com.gelinski.dto.request;
 
-import com.gelinski.dto.BaseRequestDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

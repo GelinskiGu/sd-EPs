@@ -1,4 +1,4 @@
-package com.gelinski.dto;
+package com.gelinski.dto.request;
 
 import com.gelinski.dto.enums.OperationEnum;
 import lombok.Data;
