@@ -8,9 +8,7 @@ import java.sql.SQLException;
 
 @RequiredArgsConstructor
 public class ServerApplication {
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args) throws IOException {
         ServerSocketCommunicationService.startServer();
-
-//        new Thread(() -> new Server(22001)).start();
     }
 }

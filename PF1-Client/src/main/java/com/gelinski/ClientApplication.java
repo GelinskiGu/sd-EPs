@@ -1,14 +1,11 @@
 package com.gelinski;
 
-import com.gelinski.dto.request.CreateAccountRequest;
-import com.gelinski.dto.request.LoginRequest;
-import com.gelinski.dto.request.LogoutRequest;
 import com.google.gson.Gson;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
 
 public class ClientApplication {
     private static final Gson gson = new Gson();
@@ -17,7 +14,7 @@ public class ClientApplication {
     private BufferedReader in;
     private BufferedReader stdIn;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ClientServerConnector connector = new ClientServerConnector();
 
         connector.connect();
