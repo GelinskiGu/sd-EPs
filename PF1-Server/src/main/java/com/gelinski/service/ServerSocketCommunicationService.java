@@ -1,104 +1,100 @@
 package com.gelinski.service;
 
 import com.gelinski.dto.BaseRequestDTO;
-import com.gelinski.dto.BaseResponseDTO;
-import com.gelinski.dto.enums.OperationEnum;
 import com.gelinski.dto.request.CreateAccountRequest;
 import com.gelinski.dto.request.LoginRequest;
 import com.gelinski.dto.request.LogoutRequest;
+import com.gelinski.dto.response.CreateAccountResponse;
+import com.gelinski.dto.response.LoginResponse;
+import com.gelinski.dto.response.LogoutResponse;
 import com.google.gson.Gson;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class ServerSocketCommunicationService {
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("sd");
-    private static final DatabaseService databaseService = new DatabaseService(emf);
     private static final Gson gson = new Gson();
+
 
     public static void startServer() throws IOException {
         ServerSocket serverSocket = null;
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the server port: ");
+        int port = scanner.nextInt();
         try {
-            serverSocket = new ServerSocket(10007);
-        }
-        catch (IOException e)
-        {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
             System.out.println("Could not listen on port: 10007.");
             System.exit(1);
         }
 
-        Socket clientSocket = null;
+        while (true) {
+            Socket clientSocket = null;
 
-        try {
-            System.out.println("Waiting for Client");
-            clientSocket = serverSocket.accept();
+            try {
+                System.out.println("Waiting for Client");
+                clientSocket = serverSocket.accept();
+
+
+                System.out.println("Connection successful");
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+                try {
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        if (inputLine.equals("0")) break;
+
+                        System.out.println("REQUEST: " + inputLine);
+                        String res = processRequest(gson.fromJson(inputLine, BaseRequestDTO.class), inputLine);
+                        System.out.println("RESPONSE: " + res);
+                        out.println(res);
+                    }
+                } catch (SocketException e) {
+                    System.out.println("Connection closed by client");
+                }
+
+                out.close();
+                in.close();
+                clientSocket.close();
+            } catch (IOException e) {
+                System.out.println("Accept failed.");
+                System.exit(1);
+            }
         }
-        catch (IOException e)
-        {
-            System.out.println("Accept failed.");
-            System.exit(1);
-        }
 
-        ObjectOutputStream out = new ObjectOutputStream(
-                clientSocket.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(
-                clientSocket.getInputStream());
-
-        String optionalRequestString = null;
-
-        try {
-            optionalRequestString = (String) in.readObject();
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
-            return;
-        }
-
-        System.out.println("Server received point: " + optionalRequestString + " from Client");
-
-        BaseRequestDTO request = gson.fromJson(optionalRequestString, BaseRequestDTO.class);
-        BaseResponseDTO response = processRequest(request, optionalRequestString);
-
-
-        String serializedResponse = gson.toJson(response);
-        System.out.println("Server sending point to Client: " + serializedResponse);
-        out.writeObject(serializedResponse);
-        out.flush();
-
-
-        out.close();
-        in.close();
-
-        if (Objects.equals(request.getOp(), OperationEnum.LOGOUT.getOp())) {
-            clientSocket.close();
-            serverSocket.close();
-            emf.close();
-        }
     }
 
-    private static BaseResponseDTO processRequest(BaseRequestDTO request, String message) {
+    private static String processRequest(BaseRequestDTO request, String message) {
         if (Objects.isNull(request.getOp())) {
             throw new IllegalArgumentException("Invalid operation");
         }
+
         return switch (request.getOp()) {
+
             case 1 -> {
-                CreateAccountService createAccountService = new CreateAccountService(databaseService);
-                yield createAccountService.createAccount(gson.fromJson(message, CreateAccountRequest.class));
+                CreateAccountService createAccountService = new CreateAccountService();
+                CreateAccountResponse response = createAccountService.createAccount(gson.fromJson(message, CreateAccountRequest.class));
+                yield gson.toJson(response);
             }
             case 5 -> {
-                LoginService loginService = new LoginService(databaseService);
-                yield loginService.login(gson.fromJson(message, LoginRequest.class));
+                LoginService loginService = new LoginService();
+                LoginResponse response = loginService.login(gson.fromJson(message, LoginRequest.class));
+                yield gson.toJson(response);
             }
             case 6 -> {
                 LogoutService logoutService = new LogoutService();
-                yield logoutService.logout(gson.fromJson(message, LogoutRequest.class));
+                LogoutResponse response = logoutService.logout(gson.fromJson(message, LogoutRequest.class));
+                yield gson.toJson(response);
             }
             default -> throw new IllegalArgumentException("Invalid operation");
         };

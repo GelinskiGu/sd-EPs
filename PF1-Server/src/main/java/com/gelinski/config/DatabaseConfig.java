@@ -38,9 +38,9 @@ public class DatabaseConfig {
     private static Properties loadProperties() {
         Properties props = new Properties();
 
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "postgres");
-        props.setProperty("url", "jdbc:postgresql://localhost:5436/sd");
+        props.setProperty("user", "mysql");
+        props.setProperty("password", "mysql");
+        props.setProperty("url", "jdbc:mysql://localhost:3306/sd");
         props.setProperty("useSSL", "false");
         props.setProperty("allowPublicKeyRetrieval", "true");
 

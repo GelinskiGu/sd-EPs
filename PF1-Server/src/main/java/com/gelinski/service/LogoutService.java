@@ -16,7 +16,7 @@ public class LogoutService {
 
     private static LogoutResponse getLogoutResponse(LogoutResponsesEnum typeResponseEnum) {
         LogoutResponse response = new LogoutResponse();
-        response.setCode(typeResponseEnum.getCode());
+        response.setResponse(typeResponseEnum.getCode());
         response.setMessage(typeResponseEnum.getMessage());
         return response;
     }

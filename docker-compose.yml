@@ -1,14 +1,15 @@
 version: '3.9'
 
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: postgres_sd
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_sd
     ports:
-      - "5436:5432"
+      - "3306:3306"
     expose:
-      - "5436"
+      - "3306"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=sd
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=sd
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql

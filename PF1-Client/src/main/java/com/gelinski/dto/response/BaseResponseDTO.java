@@ -8,6 +8,6 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 public class BaseResponseDTO implements Serializable {
-    private String code;
+    private String response;
     private String message;
 }
