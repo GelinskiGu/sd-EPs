@@ -10,7 +10,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 public class BaseRequestDTO implements Serializable {
-    private Integer op;
+    private String op;
 
     public Boolean validOperation() {
         return Objects.nonNull(OperationEnum.getEnumByOp(op));

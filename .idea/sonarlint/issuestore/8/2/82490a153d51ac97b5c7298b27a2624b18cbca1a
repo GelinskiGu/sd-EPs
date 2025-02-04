@@ -1,9 +1,15 @@
 
-W
-java:S1118":Add a private constructor to hide the implicit public one.(¾ĞŠ¦8¾®ßŒº2
-r	java:S106"+Replace this use of System.err by a logger.(×ä€Úøÿÿÿÿ8³…ÛŒº2J$048357de-bcb1-4acd-b595-4fe9f611c14f
-m	java:S106"+Replace this use of System.out by a logger.(×ÍÆ‹8´…ÛŒº2J$e6ccd29b-023c-4702-8c78-2b78c6a7a322
-m	java:S106!"+Replace this use of System.err by a logger.(Ì½æ©8´…ÛŒº2J$068c3aa8-ab60-4db5-aa34-b03ded601b4a
-r	java:S1062"+Replace this use of System.out by a logger.(ı™øøÿÿÿÿ8·…ÛŒº2J$64f91104-27eb-4de5-a1bc-c1a3f6a800ea
-r	java:S1066"+Replace this use of System.out by a logger.(¼öı÷ıÿÿÿÿ8·…ÛŒº2J$895cbaac-bb08-4d4a-ae9a-5a1c080f5a9e
-m	java:S1069"+Replace this use of System.out by a logger.(É°ñ¯8¸…ÛŒº2J$d5b9c9af-1f3c-4318-bc5b-14605335b9db
+}
+java:S11416"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8¡ŠÄÕ»2J$2ad3fd7b-d763-4985-97d1-e1fd448c01cd
+j
+java:S2189*""Add an end condition to this loop.(˜ïˆÿÿÿÿÿ8½ŠÄÕ»2J$b3557538-7a71-4e0e-84d3-32efcb0b5895
+}
+java:S1118":Add a private constructor to hide the implicit public one.(¾ĞŠ¦8¿ŠÄÕ»2J$0917e5f2-99b4-4f36-b354-2729ee0e9bfd
+r	java:S106!"+Replace this use of System.out by a logger.(çÍÑ“ÿÿÿÿÿ8ÄŠÄÕ»2J$bcc035c8-0f56-4887-87f2-93f3a3be176f
+m	java:S106&"+Replace this use of System.out by a logger.(ÄĞ–ª8ÅŠÄÕ»2J$cb5d4abc-aea6-4d20-942e-a67d82294ed1
+m	java:S106."+Replace this use of System.out by a logger.(×ÍÆ‹8ÅŠÄÕ»2J$d2123c69-b2fb-48de-a826-c7ff27bae0b1
+r	java:S1062"+Replace this use of System.out by a logger.(¤›øÿÿÿÿ8ÅŠÄÕ»2J$7a955515-6c71-423a-94d0-67a6b3633f5d
+m	java:S106;"+Replace this use of System.out by a logger.(Ãåõ…8ÈŠÄÕ»2J$1fc48283-f200-4bd6-885c-dd7d02373141
+r	java:S106="+Replace this use of System.out by a logger.(¸Í·ıÿÿÿÿÿ8ÈŠÄÕ»2J$9f373c0e-6ac4-4776-ba4e-5325f7950b97
+r	java:S106A"+Replace this use of System.out by a logger.(ˆÍãıÿÿÿÿ8ÉŠÄÕ»2J$d23b5cce-5904-4c31-9d16-7d2c926e01cd
+r	java:S106I"+Replace this use of System.out by a logger.(§ÎÑûÿÿÿÿ8ÉŠÄÕ»2J$fbf7fcdd-80fa-4bad-bad1-e09f2b2e4879

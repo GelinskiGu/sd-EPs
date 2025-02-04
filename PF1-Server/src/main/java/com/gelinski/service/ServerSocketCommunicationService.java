@@ -16,12 +16,14 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class ServerSocketCommunicationService {
     private static final Gson gson = new Gson();
-
+    private static List<String> loggedUsers = new ArrayList<>();
 
     public static void startServer() throws IOException {
         ServerSocket serverSocket = null;
@@ -63,6 +65,7 @@ public class ServerSocketCommunicationService {
                     System.out.println("Connection closed by client");
                 }
 
+                loggedUsers.clear();
                 out.close();
                 in.close();
                 clientSocket.close();
@@ -81,19 +84,19 @@ public class ServerSocketCommunicationService {
 
         return switch (request.getOp()) {
 
-            case 1 -> {
+            case "1" -> {
                 CreateAccountService createAccountService = new CreateAccountService();
                 CreateAccountResponse response = createAccountService.createAccount(gson.fromJson(message, CreateAccountRequest.class));
                 yield gson.toJson(response);
             }
-            case 5 -> {
+            case "5" -> {
                 LoginService loginService = new LoginService();
                 LoginResponse response = loginService.login(gson.fromJson(message, LoginRequest.class));
                 yield gson.toJson(response);
             }
-            case 6 -> {
+            case "6" -> {
                 LogoutService logoutService = new LogoutService();
-                LogoutResponse response = logoutService.logout(gson.fromJson(message, LogoutRequest.class));
+                LogoutResponse response = logoutService.logout(gson.fromJson(message, LogoutRequest.class), loggedUsers);
                 yield gson.toJson(response);
             }
             default -> throw new IllegalArgumentException("Invalid operation");

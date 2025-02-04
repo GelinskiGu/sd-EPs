@@ -90,22 +90,22 @@ public class ClientServerConnector {
             System.out.println("2 - Login");
             System.out.println("3 - Logout");
             System.out.print("Operação: ");
-            int operation = Integer.parseInt(scanner.nextLine());
+            String operation = scanner.nextLine();
 
             switch (operation) {
-                case 1:
+                case "1":
                     String createAccountSerializedRequest = createAccount(scanner);
                     System.out.println("INFO: Sending create account operation to server.");
                     String responseCreate = sendToServer(createAccountSerializedRequest);
                     processResponse(responseCreate);
                     break;
-                case 2:
+                case "2":
                     String loginSerializedRequest = login(scanner);
                     System.out.println("INFO: Sending login operation to server.");
                     String responseLogin = sendToServer(loginSerializedRequest);
                     processResponse(responseLogin);
                     break;
-                case 3:
+                case "3":
                     String logoutSerializedRequest = logout(scanner);
                     System.out.println("INFO: Sending logout operation to server.");
                     String responseLogout = sendToServer(logoutSerializedRequest);
@@ -120,7 +120,7 @@ public class ClientServerConnector {
 
     private static String logout(Scanner scanner) {
         LogoutRequest logoutRequest = new LogoutRequest();
-        logoutRequest.setOp(6);
+        logoutRequest.setOp("6");
         System.out.println("Token: ");
         logoutRequest.setToken(scanner.nextLine());
         return gson.toJson(logoutRequest);
@@ -128,7 +128,7 @@ public class ClientServerConnector {
 
     private static String login(Scanner scanner) {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setOp(5);
+        loginRequest.setOp("5");
         System.out.println("User: ");
         loginRequest.setUser(scanner.nextLine());
         System.out.println("Password: ");
@@ -138,7 +138,7 @@ public class ClientServerConnector {
 
     private static String createAccount(Scanner scanner) {
         CreateAccountRequest createAccountRequest = new CreateAccountRequest();
-        createAccountRequest.setOp(1);
+        createAccountRequest.setOp("1");
         System.out.println("Name: ");
         createAccountRequest.setName(scanner.nextLine());
         System.out.println("User: ");

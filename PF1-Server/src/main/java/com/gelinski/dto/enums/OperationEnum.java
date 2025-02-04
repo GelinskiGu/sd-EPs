@@ -8,11 +8,11 @@ import java.util.Arrays;
 @Getter
 @RequiredArgsConstructor
 public enum OperationEnum {
-    LOGIN(5), SIGN_UP(1), LOGOUT(6);
+    LOGIN("5"), SIGN_UP("1"), LOGOUT("6");
 
-    private final Integer op;
+    private final String op;
 
-    public static OperationEnum getEnumByOp(Integer op) {
+    public static OperationEnum getEnumByOp(String op) {
         return Arrays.stream(OperationEnum.values())
                 .filter(operationEnum -> operationEnum.getOp().equals(op))
                 .findFirst()
