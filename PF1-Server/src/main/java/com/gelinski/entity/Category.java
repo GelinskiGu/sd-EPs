@@ -7,14 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Account {
+public class Category {
     private Long id;
-
     private String name;
-
-    private String user;
-
-    private String password;
-
-    private Boolean isAdmin;
+    private String description;
 }

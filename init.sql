@@ -3,5 +3,11 @@ CREATE TABLE account (
     name VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    type VARCHAR(255) DEFAULT 'NORMAL_USER'
-)
+    is_admin boolean DEFAULT false
+);
+
+CREATE TABLE category (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255)
+);
