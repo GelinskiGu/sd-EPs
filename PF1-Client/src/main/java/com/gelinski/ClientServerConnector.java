@@ -179,8 +179,8 @@ public class ClientServerConnector {
 
         DeleteCategoryRequest deleteCategoryRequest = new DeleteCategoryRequest();
         deleteCategoryRequest.setOp("10");
-        System.out.println("Token: ");
-        deleteCategoryRequest.setToken(scanner.nextLine());
+        System.out.println("Token: " + token);
+        deleteCategoryRequest.setToken(token);
 
         boolean addCategory = true;
         List<String> categoryIds = new ArrayList<>();
@@ -201,8 +201,8 @@ public class ClientServerConnector {
 
         CreateCategoryRequest updateCategoryRequest = new CreateCategoryRequest();
         updateCategoryRequest.setOp("9");
-        System.out.println("Token: ");
-        updateCategoryRequest.setToken(scanner.nextLine());
+        System.out.println("Token: " + token);
+        updateCategoryRequest.setToken(token);
 
         boolean addCategory = true;
         List<Category> categories = new ArrayList<>();
@@ -239,8 +239,8 @@ public class ClientServerConnector {
     private String createCategory(Scanner scanner) {
         CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest();
         createCategoryRequest.setOp("7");
-        System.out.println("Token: ");
-        createCategoryRequest.setToken(scanner.nextLine());
+        System.out.println("Token: " + token);
+        createCategoryRequest.setToken(token);
 
         boolean addCategory = true;
         List<Category> categories = new ArrayList<>();
@@ -268,8 +268,8 @@ public class ClientServerConnector {
         deleteAccountRequest.setOp("4");
         System.out.println("User: ");
         deleteAccountRequest.setUser(scanner.nextLine());
-        System.out.println("Token: ");
-        deleteAccountRequest.setToken(scanner.nextLine());
+        System.out.println("Token: " + token);
+        deleteAccountRequest.setToken(token);
         return gson.toJson(deleteAccountRequest);
     }
 
@@ -304,20 +304,20 @@ public class ClientServerConnector {
         updateAccountRequest.setPassword(scanner.nextLine());
         System.out.println("Name: ");
         updateAccountRequest.setName(scanner.nextLine());
-        System.out.println("Token: ");
-        updateAccountRequest.setToken(scanner.nextLine());
+        System.out.println("Token: " + token);
+        updateAccountRequest.setToken(token);
         return gson.toJson(updateAccountRequest);
     }
 
-    private static String logout(Scanner scanner) {
+    private String logout(Scanner scanner) {
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setOp("6");
-        System.out.println("Token: ");
-        logoutRequest.setToken(scanner.nextLine());
+        System.out.println("Token: " + token);
+        logoutRequest.setToken(token);
         return gson.toJson(logoutRequest);
     }
 
-    private static String login(Scanner scanner) {
+    private String login(Scanner scanner) {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setOp("5");
         System.out.println("User: ");

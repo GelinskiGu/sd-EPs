@@ -2,6 +2,7 @@ package com.gelinski.service;
 
 
 import com.gelinski.dto.BaseRequestDTO;
+import com.gelinski.dto.BaseResponseDTO;
 import com.gelinski.dto.request.*;
 import com.gelinski.dto.request.category.CreateCategoryRequest;
 import com.gelinski.dto.request.category.DeleteCategoryRequest;
@@ -69,6 +70,10 @@ public class ServerSocketCommunicationService {
                         String res = processRequest(gson.fromJson(inputLine, BaseRequestDTO.class), inputLine);
                         System.out.println("RESPONSE: " + res);
                         out.println(res);
+                        BaseResponseDTO response = gson.fromJson(res, BaseResponseDTO.class);
+                        if (Objects.equals(response.getResponse(), "130")) {
+                            break;
+                        }
                     }
                 } catch (SocketException e) {
                     System.out.println("Connection closed by client");
