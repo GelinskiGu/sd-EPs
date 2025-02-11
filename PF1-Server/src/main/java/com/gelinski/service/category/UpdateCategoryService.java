@@ -1,7 +1,6 @@
 package com.gelinski.service.category;
 
 import com.gelinski.config.DatabaseConfig;
-import com.gelinski.dto.enums.category.CreateCategoryEnum;
 import com.gelinski.dto.enums.category.UpdateCategoryEnum;
 import com.gelinski.dto.request.category.Category;
 import com.gelinski.dto.request.category.CreateCategoryRequest;
@@ -15,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class UpdateCategoryService {
     public UpdateCategoryResponse updateCategory(CreateCategoryRequest request, String loggedUserToken) {
@@ -51,9 +51,11 @@ public class UpdateCategoryService {
             throw new RuntimeException(e);
         }
 
+        AtomicReference<Boolean> allCategoriesExists = new AtomicReference<>(Boolean.TRUE);
         request.getCategories().forEach(category -> {
             Category categoryToUpdate = categories.stream().filter(c -> c.getId().equals(category.getId())).findFirst().orElse(null);
-            if (Objects.isNull(categoryToUpdate)) {
+            if (Objects.isNull(categoryToUpdate) || Boolean.FALSE.equals(allCategoriesExists.get())) {
+                allCategoriesExists.set(Boolean.FALSE);
                 return;
             }
             try {
@@ -66,6 +68,10 @@ public class UpdateCategoryService {
                 throw new RuntimeException(e);
             }
         });
+
+        if (Boolean.FALSE.equals(allCategoriesExists.get())) {
+            return getUpdateCategoryResponse(UpdateCategoryEnum.INVALID_INPUT);
+        }
 
         return getUpdateCategoryResponse(UpdateCategoryEnum.SUCCESS);
     }

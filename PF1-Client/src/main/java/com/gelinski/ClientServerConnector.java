@@ -67,7 +67,7 @@ public class ClientServerConnector {
         try {
             return in.readLine();
         } catch (IOException e) {
-            System.out.println("ERROR: Server Response" + e.getMessage());
+            System.out.println("ERROR: Server Response " + e.getMessage());
             closeAllConnections();
         }
 
@@ -188,7 +188,7 @@ public class ClientServerConnector {
             System.out.println("Category ID: ");
             categoryIds.add(scanner.nextLine());
             System.out.println("Deseja deletar mais uma categoria? (S/N)");
-            String addMore = scanner.nextLine();
+            String addMore = scanner.nextLine().toUpperCase();
             if (!addMore.equalsIgnoreCase("S")) {
                 addCategory = false;
             }
@@ -218,7 +218,7 @@ public class ClientServerConnector {
             category.setDescription(categoryDescription);
             categories.add(category);
             System.out.println("Deseja atualizar mais uma categoria? (S/N)");
-            String addMore = scanner.nextLine();
+            String addMore = scanner.nextLine().toUpperCase();
             if (!addMore.equalsIgnoreCase("S")) {
                 addCategory = false;
             }
@@ -254,7 +254,7 @@ public class ClientServerConnector {
             category.setDescription(categoryDescription);
             categories.add(category);
             System.out.println("Deseja adicionar mais uma categoria? (S/N)");
-            String addMore = scanner.nextLine();
+            String addMore = scanner.nextLine().toUpperCase();
             if (!addMore.equalsIgnoreCase("S")) {
                 addCategory = false;
             }

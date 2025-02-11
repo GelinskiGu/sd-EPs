@@ -3,6 +3,13 @@ package com.gelinski.service;
 
 import com.gelinski.dto.BaseRequestDTO;
 import com.gelinski.dto.BaseResponseDTO;
+import com.gelinski.dto.enums.account.DeleteAccountEnum;
+import com.gelinski.dto.enums.account.ReadAccountEnum;
+import com.gelinski.dto.enums.account.UpdateAccountEnum;
+import com.gelinski.dto.enums.category.CreateCategoryEnum;
+import com.gelinski.dto.enums.category.DeleteCategoryEnum;
+import com.gelinski.dto.enums.category.ReadCategoryEnum;
+import com.gelinski.dto.enums.category.UpdateCategoryEnum;
 import com.gelinski.dto.request.*;
 import com.gelinski.dto.request.category.CreateCategoryRequest;
 import com.gelinski.dto.request.category.DeleteCategoryRequest;
@@ -72,7 +79,10 @@ public class ServerSocketCommunicationService {
                         out.println(res);
                         BaseResponseDTO response = gson.fromJson(res, BaseResponseDTO.class);
                         if (Objects.equals(response.getResponse(), "130")) {
-                            break;
+                            DeleteAccountRequest deleteAccountRequest = gson.fromJson(inputLine, DeleteAccountRequest.class);
+                            if (deleteAccountRequest.getUser().equals(loggedUsers.get(0)) || deleteAccountRequest.getUser().isEmpty()) {
+                                break;
+                            }
                         }
                     }
                 } catch (SocketException e) {
@@ -104,16 +114,34 @@ public class ServerSocketCommunicationService {
             }
             case "2" -> {
                 ReadAccountService readAccountService = new ReadAccountService();
+                if (loggedUsers.isEmpty()) {
+                    ReadAccountResponse response = new ReadAccountResponse();
+                    response.setResponse(ReadAccountEnum.INVALID_OR_EMPTY_TOKEN.getCode());
+                    response.setMessage(ReadAccountEnum.INVALID_OR_EMPTY_TOKEN.getMessage());
+                    yield gson.toJson(response);
+                }
                 ReadAccountResponse response = readAccountService.readAccount(gson.fromJson(message, ReadAccountRequest.class), loggedUsers.get(0));
                 yield gson.toJson(response);
             }
             case "3" -> {
                 UpdateAccountService updateAccountService = new UpdateAccountService();
+                if (loggedUsers.isEmpty()) {
+                    UpdateAccountResponse response = new UpdateAccountResponse();
+                    response.setResponse(UpdateAccountEnum.INVALID_OR_EMPTY_TOKEN.getCode());
+                    response.setMessage(UpdateAccountEnum.INVALID_OR_EMPTY_TOKEN.getMessage());
+                    yield gson.toJson(response);
+                }
                 UpdateAccountResponse response = updateAccountService.updateAccount(gson.fromJson(message, UpdateAccountRequest.class), loggedUsers.get(0));
                 yield gson.toJson(response);
             }
             case "4" -> {
                 DeleteAccountService deleteAccountService = new DeleteAccountService();
+                if (loggedUsers.isEmpty()) {
+                    DeleteAccountResponse response = new DeleteAccountResponse();
+                    response.setResponse(DeleteAccountEnum.ERROR_DELETE_ACCOUNT.getCode());
+                    response.setMessage(DeleteAccountEnum.ERROR_DELETE_ACCOUNT.getMessage());
+                    yield gson.toJson(response);
+                }
                 DeleteAccountResponse response = deleteAccountService.deleteAccount(gson.fromJson(message, DeleteAccountRequest.class), loggedUsers.get(0));
                 yield gson.toJson(response);
             }
@@ -130,21 +158,45 @@ public class ServerSocketCommunicationService {
             }
             case "7" -> {
                 CreateCategoryService createCategoryService = new CreateCategoryService();
+                if (loggedUsers.isEmpty()) {
+                    CreateCategoryResponse response = new CreateCategoryResponse();
+                    response.setResponse(CreateCategoryEnum.INVALID_TOKEN.getCode());
+                    response.setMessage(CreateCategoryEnum.INVALID_TOKEN.getMessage());
+                    yield gson.toJson(response);
+                }
                 CreateCategoryResponse response = createCategoryService.createCategory(gson.fromJson(message, CreateCategoryRequest.class), loggedUsers.get(0));
                 yield gson.toJson(response);
             }
             case "8" -> {
                 ReadCategoryService readCategoryService = new ReadCategoryService();
+                if (loggedUsers.isEmpty()) {
+                    ReadCategoryResponse response = new ReadCategoryResponse();
+                    response.setResponse(ReadCategoryEnum.INVALID_TOKEN.getCode());
+                    response.setMessage(ReadCategoryEnum.INVALID_TOKEN.getMessage());
+                    yield gson.toJson(response);
+                }
                 ReadCategoryResponse response = readCategoryService.readCategories(gson.fromJson(message, ReadCategoryRequest.class), loggedUsers.get(0));
                 yield gson.toJson(response);
             }
             case "9" -> {
                 UpdateCategoryService updateCategoryService = new UpdateCategoryService();
+                if (loggedUsers.isEmpty()) {
+                    UpdateCategoryResponse response = new UpdateCategoryResponse();
+                    response.setResponse(UpdateCategoryEnum.INVALID_TOKEN.getCode());
+                    response.setMessage(UpdateCategoryEnum.INVALID_TOKEN.getMessage());
+                    yield gson.toJson(response);
+                }
                 UpdateCategoryResponse response = updateCategoryService.updateCategory(gson.fromJson(message, CreateCategoryRequest.class), loggedUsers.get(0));
                 yield gson.toJson(response);
             }
             case "10" -> {
                 DeleteCategoryService deleteCategoryService = new DeleteCategoryService();
+                if (loggedUsers.isEmpty()) {
+                    DeleteCategoryResponse response = new DeleteCategoryResponse();
+                    response.setResponse(DeleteCategoryEnum.INVALID_TOKEN.getCode());
+                    response.setMessage(DeleteCategoryEnum.INVALID_TOKEN.getMessage());
+                    yield gson.toJson(response);
+                }
                 DeleteCategoryResponse response = deleteCategoryService.deleteCategory(gson.fromJson(message, DeleteCategoryRequest.class), loggedUsers.get(0));
                 yield gson.toJson(response);
             }
