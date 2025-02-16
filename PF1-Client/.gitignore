@@ -8,8 +8,11 @@ target/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
-*.iws
+.idea/*
+.idea/
 *.iml
+.idea
+*.iws
 *.ipr
 
 ### Eclipse ###

@@ -22,10 +22,16 @@ public class LoginService {
         }
 
         try {
-            String token = authenticateUser(request);
+            Account account = authenticateUser(request);
+            if (Boolean.TRUE.equals(account.getIsAdmin())) {
+                LoginResponsesEnum adminSuccessfulLogin = LoginResponsesEnum.ADMIN_USER_SUCCESSFUL_LOGIN;
+                LoginResponse loginResponse = getLoginResponse(adminSuccessfulLogin);
+                loginResponse.setToken(account.getUser());
+                return loginResponse;
+            }
             LoginResponsesEnum normalUserSuccessfulLogin = LoginResponsesEnum.NORMAL_USER_SUCCESSFUL_LOGIN;
             LoginResponse response = getLoginResponse(normalUserSuccessfulLogin);
-            response.setToken(token);
+            response.setToken(account.getUser());
             return response;
         } catch (Exception e) {
             LoginResponsesEnum loginFailed = LoginResponsesEnum.LOGIN_FAILED;
@@ -40,7 +46,7 @@ public class LoginService {
         return response;
     }
 
-    private String authenticateUser(LoginRequest request) {
+    private Account authenticateUser(LoginRequest request) {
         Optional<Account> optionalUser;
         try {
             Connection conn = DatabaseConfig.connect();
@@ -53,6 +59,6 @@ public class LoginService {
             throw new RuntimeException("User not found or password incorrect");
         }
 
-        return optionalUser.get().getUser();
+        return optionalUser.get();
     }
 }
