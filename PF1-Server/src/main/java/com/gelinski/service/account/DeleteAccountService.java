@@ -2,20 +2,27 @@ package com.gelinski.service.account;
 
 import com.gelinski.config.DatabaseConfig;
 import com.gelinski.dto.enums.account.DeleteAccountEnum;
-import com.gelinski.dto.request.DeleteAccountRequest;
+import com.gelinski.dto.enums.account.UpdateAccountEnum;
+import com.gelinski.dto.request.account.DeleteAccountRequest;
 import com.gelinski.dto.response.account.DeleteAccountResponse;
 import com.gelinski.entity.Account;
 import com.gelinski.repository.AccountRepository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class DeleteAccountService {
 
-    public DeleteAccountResponse deleteAccount(DeleteAccountRequest request, String loggedUserToken) {
+    public DeleteAccountResponse deleteAccount(DeleteAccountRequest request, List<String> loggedUsersToken) {
         if (request.getUser().isEmpty()) {
             request.setUser(request.getToken());
+        }
+
+        if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, request.getToken()))) {
+            return getDeleteAccountResponse(DeleteAccountEnum.ERROR_DELETE_ACCOUNT);
         }
 
         Optional<Account> optionalUser;

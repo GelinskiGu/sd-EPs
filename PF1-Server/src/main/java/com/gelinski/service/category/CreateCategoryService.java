@@ -1,6 +1,7 @@
 package com.gelinski.service.category;
 
 import com.gelinski.config.DatabaseConfig;
+import com.gelinski.dto.enums.announcement.DeleteAnnouncementEnum;
 import com.gelinski.dto.enums.category.CreateCategoryEnum;
 import com.gelinski.dto.request.category.CreateCategoryRequest;
 import com.gelinski.dto.response.category.CreateCategoryResponse;
@@ -10,12 +11,13 @@ import com.gelinski.repository.CategoryRepository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 public class CreateCategoryService {
-    public CreateCategoryResponse createCategory(CreateCategoryRequest request, String loggedUserToken) {
-        if (Objects.isNull(loggedUserToken) || loggedUserToken.isEmpty()) {
+    public CreateCategoryResponse createCategory(CreateCategoryRequest request, List<String> loggedUsersToken) {
+        if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, request.getToken()))) {
             return getCreatedCategoryResponse(CreateCategoryEnum.INVALID_TOKEN);
         }
 

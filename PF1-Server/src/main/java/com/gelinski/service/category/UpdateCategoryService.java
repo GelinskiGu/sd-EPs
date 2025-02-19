@@ -17,8 +17,8 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class UpdateCategoryService {
-    public UpdateCategoryResponse updateCategory(CreateCategoryRequest request, String loggedUserToken) {
-        if (Objects.isNull(loggedUserToken) || loggedUserToken.isEmpty()) {
+    public UpdateCategoryResponse updateCategory(CreateCategoryRequest request, List<String> loggedUsersToken) {
+        if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, request.getToken()))) {
             return getUpdateCategoryResponse(UpdateCategoryEnum.INVALID_TOKEN);
         }
 

@@ -17,6 +17,6 @@ public class ClientApplication {
     public static void main(String[] args) {
         ClientServerConnector connector = new ClientServerConnector();
 
-        connector.connect();
+//        connector.connect();
     }
 }

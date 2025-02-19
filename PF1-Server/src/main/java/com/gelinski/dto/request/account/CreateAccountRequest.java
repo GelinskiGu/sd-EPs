@@ -1,4 +1,4 @@
-package com.gelinski.dto.request;
+package com.gelinski.dto.request.account;
 
 import com.gelinski.dto.BaseRequestDTO;
 import lombok.Data;

@@ -2,27 +2,30 @@ package com.gelinski.service.account;
 
 import com.gelinski.config.DatabaseConfig;
 import com.gelinski.dto.enums.account.UpdateAccountEnum;
-import com.gelinski.dto.request.UpdateAccountRequest;
+import com.gelinski.dto.enums.announcement.DeleteAnnouncementEnum;
+import com.gelinski.dto.request.account.UpdateAccountRequest;
 import com.gelinski.dto.response.account.UpdateAccountResponse;
 import com.gelinski.entity.Account;
 import com.gelinski.repository.AccountRepository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 public class UpdateAccountService {
 
-    public UpdateAccountResponse updateAccount(UpdateAccountRequest updateAccountRequest, String loggedUserToken) {
+    public UpdateAccountResponse updateAccount(UpdateAccountRequest updateAccountRequest, List<String> loggedUsersToken) {
         if (updateAccountRequest.getUser().isEmpty()) {
             updateAccountRequest.setUser(updateAccountRequest.getToken());
         }
 
-        if (Objects.isNull(loggedUserToken) || loggedUserToken.isEmpty()) {
+        if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, updateAccountRequest.getToken()))) {
             return getUpdateAccountResponse(UpdateAccountEnum.ERROR_UPDATE_ACCOUNT);
         }
 
+        String loggedUserToken = loggedUsersToken.stream().filter(loggedUser -> Objects.equals(loggedUser, updateAccountRequest.getToken())).findFirst().orElse(null);
         if (Objects.isNull(updateAccountRequest.getToken()) || updateAccountRequest.getToken().isEmpty() || !Objects.equals(loggedUserToken, updateAccountRequest.getToken())) {
             return getUpdateAccountResponse(UpdateAccountEnum.INVALID_OR_EMPTY_TOKEN);
         }

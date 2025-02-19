@@ -2,25 +2,30 @@ package com.gelinski.service.account;
 
 import com.gelinski.config.DatabaseConfig;
 import com.gelinski.dto.enums.account.ReadAccountEnum;
-import com.gelinski.dto.request.ReadAccountRequest;
+import com.gelinski.dto.enums.announcement.DeleteAnnouncementEnum;
+import com.gelinski.dto.request.account.ReadAccountRequest;
 import com.gelinski.dto.response.account.ReadAccountResponse;
 import com.gelinski.entity.Account;
 import com.gelinski.repository.AccountRepository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 public class ReadAccountService {
 
-    public ReadAccountResponse readAccount(ReadAccountRequest readAccountRequest, String loggedUserToken) {
+    public ReadAccountResponse readAccount(ReadAccountRequest readAccountRequest, List<String> loggedUsersToken) {
         if (readAccountRequest.getUser().isEmpty()) {
             readAccountRequest.setUser(readAccountRequest.getToken());
         }
-        if (Objects.isNull(loggedUserToken) || loggedUserToken.isEmpty()) {
+
+        if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, readAccountRequest.getToken()))) {
             return getReadAccountResponse(ReadAccountEnum.ERROR_READ_ACCOUNT, new ReadAccountResponse());
         }
+        String loggedUserToken = loggedUsersToken.stream().filter(loggedUser -> Objects.equals(loggedUser, readAccountRequest.getToken())).findFirst().orElse(null);
+
         if (Objects.isNull(readAccountRequest.getToken()) || readAccountRequest.getToken().isEmpty() || !Objects.equals(loggedUserToken, readAccountRequest.getToken())) {
             return getReadAccountResponse(ReadAccountEnum.INVALID_OR_EMPTY_TOKEN, new ReadAccountResponse());
         }

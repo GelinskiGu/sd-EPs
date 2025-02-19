@@ -17,8 +17,8 @@ import java.util.Optional;
 
 public class DeleteCategoryService {
 
-    public DeleteCategoryResponse deleteCategory(DeleteCategoryRequest request, String loggedUserToken) {
-        if (Objects.isNull(loggedUserToken) || loggedUserToken.isEmpty()) {
+    public DeleteCategoryResponse deleteCategory(DeleteCategoryRequest request, List<String> loggedUsersToken) {
+        if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, request.getToken()))) {
             return getDeleteCategoryResponse(DeleteCategoryEnum.INVALID_TOKEN);
         }
 

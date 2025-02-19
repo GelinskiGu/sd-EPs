@@ -17,8 +17,8 @@ import java.util.Optional;
 
 public class ReadCategoryService {
 
-    public ReadCategoryResponse readCategories(ReadCategoryRequest request, String loggedUserToken) {
-        if (Objects.isNull(loggedUserToken) || loggedUserToken.isEmpty()) {
+    public ReadCategoryResponse readCategories(ReadCategoryRequest request, List<String> loggedUsersToken) {
+        if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, request.getToken()))) {
             return getReadAccountResponse(ReadCategoryEnum.INVALID_TOKEN, new ReadCategoryResponse());
         }
 

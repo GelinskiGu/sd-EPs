@@ -2,7 +2,7 @@ package com.gelinski.service.account;
 
 import com.gelinski.config.DatabaseConfig;
 import com.gelinski.dto.enums.account.LoginResponsesEnum;
-import com.gelinski.dto.request.LoginRequest;
+import com.gelinski.dto.request.account.LoginRequest;
 import com.gelinski.dto.response.account.LoginResponse;
 import com.gelinski.entity.Account;
 import com.gelinski.repository.AccountRepository;

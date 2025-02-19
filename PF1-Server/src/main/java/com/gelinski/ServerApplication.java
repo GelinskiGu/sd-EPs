@@ -1,10 +1,9 @@
 package com.gelinski;
 
-import com.gelinski.service.ServerSocketCommunicationService;
+import com.gelinski.server.ServerSocketCommunicationService;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @RequiredArgsConstructor
 public class ServerApplication {

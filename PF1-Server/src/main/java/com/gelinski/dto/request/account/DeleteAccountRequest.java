@@ -1,4 +1,4 @@
-package com.gelinski.dto.request;
+package com.gelinski.dto.request.account;
 
 import com.gelinski.dto.BaseRequestDTO;
 import lombok.Data;
@@ -10,9 +10,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class UpdateAccountRequest extends BaseRequestDTO implements Serializable {
+public class DeleteAccountRequest extends BaseRequestDTO implements Serializable {
     private String user;
-    private String password;
-    private String name;
     private String token;
 }

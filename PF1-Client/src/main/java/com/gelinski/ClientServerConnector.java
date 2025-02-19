@@ -25,7 +25,7 @@ public class ClientServerConnector {
     private BufferedReader in;
     private BufferedReader stdIn;
     private static final Gson gson = new Gson();
-    private String token;
+    public String token;
 
     public ClientServerConnector() {
         this.socket = null;
@@ -34,15 +34,7 @@ public class ClientServerConnector {
         this.stdIn = null;
     }
 
-    public void connect() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Qual host deseja se conectar?");
-        String host = scanner.nextLine();
-
-        System.out.print("Qual porta deseja se conectar?");
-        int port = Integer.parseInt(scanner.nextLine());
-
+    public void connect(String host, int port) {
         try {
             socket = new Socket(host, port);
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -50,7 +42,6 @@ public class ClientServerConnector {
             stdIn = new BufferedReader(new InputStreamReader(System.in));
 
             System.out.println("INFO: Connection successfully host: " + host + " port: " + port);
-            process();
         } catch (UnknownHostException e) {
             System.out.println("ERROR: Host not found" + e.getMessage());
             closeAllConnections();
@@ -87,7 +78,7 @@ public class ClientServerConnector {
         }
     }
 
-    public void process() {
+    /*public void process() {
         boolean running = true;
         Scanner scanner = new Scanner(System.in);
         while (running) {
@@ -173,158 +164,94 @@ public class ClientServerConnector {
                     System.out.println("Operação inválida.");
             }
         }
-    }
+    }*/
 
-    private String deleteCategory(Scanner scanner) {
-
-        DeleteCategoryRequest deleteCategoryRequest = new DeleteCategoryRequest();
-        deleteCategoryRequest.setOp("10");
-        System.out.println("Token: " + token);
-        deleteCategoryRequest.setToken(token);
-
-        boolean addCategory = true;
-        List<String> categoryIds = new ArrayList<>();
-        while (addCategory) {
-            System.out.println("Category ID: ");
-            categoryIds.add(scanner.nextLine());
-            System.out.println("Deseja deletar mais uma categoria? (S/N)");
-            String addMore = scanner.nextLine().toUpperCase();
-            if (!addMore.equalsIgnoreCase("S")) {
-                addCategory = false;
-            }
-        }
-        deleteCategoryRequest.setCategoryIds(categoryIds);
-        return gson.toJson(deleteCategoryRequest);
-    }
-
-    private String updateCategory(Scanner scanner) {
-
-        CreateCategoryRequest updateCategoryRequest = new CreateCategoryRequest();
-        updateCategoryRequest.setOp("9");
-        System.out.println("Token: " + token);
-        updateCategoryRequest.setToken(token);
-
-        boolean addCategory = true;
-        List<Category> categories = new ArrayList<>();
-        while (addCategory) {
-            Category category = new Category();
-            System.out.println("Category ID: ");
-            category.setId(scanner.nextLine());
-            System.out.println("Nome da categoria: ");
-            String categoryName = scanner.nextLine();
-            category.setName(categoryName);
-            System.out.println("Descrição da categoria: ");
-            String categoryDescription = scanner.nextLine();
-            category.setDescription(categoryDescription);
-            categories.add(category);
-            System.out.println("Deseja atualizar mais uma categoria? (S/N)");
-            String addMore = scanner.nextLine().toUpperCase();
-            if (!addMore.equalsIgnoreCase("S")) {
-                addCategory = false;
-            }
-        }
-        updateCategoryRequest.setCategories(categories);
-
-        return gson.toJson(updateCategoryRequest);
-    }
-
-    private String readCategory(Scanner scanner) {
-        ReadCategoryRequest readCategoryRequest = new ReadCategoryRequest();
-        readCategoryRequest.setOp("8");
-        System.out.println("Token: " + token);
-        readCategoryRequest.setToken(token);
-        return gson.toJson(readCategoryRequest);
-    }
-
-    private String createCategory(Scanner scanner) {
-        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest();
-        createCategoryRequest.setOp("7");
-        System.out.println("Token: " + token);
-        createCategoryRequest.setToken(token);
-
-        boolean addCategory = true;
-        List<Category> categories = new ArrayList<>();
-        while (addCategory) {
-            Category category = new Category();
-            System.out.println("Nome da categoria: ");
-            String categoryName = scanner.nextLine();
-            category.setName(categoryName);
-            System.out.println("Descrição da categoria: ");
-            String categoryDescription = scanner.nextLine();
-            category.setDescription(categoryDescription);
-            categories.add(category);
-            System.out.println("Deseja adicionar mais uma categoria? (S/N)");
-            String addMore = scanner.nextLine().toUpperCase();
-            if (!addMore.equalsIgnoreCase("S")) {
-                addCategory = false;
-            }
-        }
-        createCategoryRequest.setCategories(categories);
-        return gson.toJson(createCategoryRequest);
-    }
-
-    private String deleteAccount(Scanner scanner) {
-        DeleteAccountRequest deleteAccountRequest = new DeleteAccountRequest();
-        deleteAccountRequest.setOp("4");
-        System.out.println("User: ");
-        deleteAccountRequest.setUser(scanner.nextLine());
-        System.out.println("Token: " + token);
-        deleteAccountRequest.setToken(token);
-        return gson.toJson(deleteAccountRequest);
-    }
-
-    private static String createAccount(Scanner scanner) {
+    public String createAccount(String name, String user, String password) {
         CreateAccountRequest createAccountRequest = new CreateAccountRequest();
         createAccountRequest.setOp("1");
-        System.out.println("Name: ");
-        createAccountRequest.setName(scanner.nextLine());
-        System.out.println("User: ");
-        createAccountRequest.setUser(scanner.nextLine());
-        System.out.println("Password: ");
-        createAccountRequest.setPassword(scanner.nextLine());
+        createAccountRequest.setName(name);
+        createAccountRequest.setUser(user);
+        createAccountRequest.setPassword(password);
         return gson.toJson(createAccountRequest);
     }
 
-    private String readAccount(Scanner scanner) {
-        ReadAccountRequest readAccountRequest = new ReadAccountRequest();
-        readAccountRequest.setOp("2");
-        System.out.println("User: ");
-        readAccountRequest.setUser(scanner.nextLine());
-        System.out.println("Token: " + token);
-        readAccountRequest.setToken(token);
-        return gson.toJson(readAccountRequest);
+    public String login(String user, String password) {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setOp("5");
+        loginRequest.setUser(user);
+        loginRequest.setPassword(password);
+        return gson.toJson(loginRequest);
     }
 
-    private String updateAccount(Scanner scanner) {
-        UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest();
-        updateAccountRequest.setOp("3");
-        System.out.println("User: ");
-        updateAccountRequest.setUser(scanner.nextLine());
-        System.out.println("Password: ");
-        updateAccountRequest.setPassword(scanner.nextLine());
-        System.out.println("Name: ");
-        updateAccountRequest.setName(scanner.nextLine());
-        System.out.println("Token: " + token);
-        updateAccountRequest.setToken(token);
-        return gson.toJson(updateAccountRequest);
-    }
-
-    private String logout(Scanner scanner) {
+    public String logout() {
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setOp("6");
-        System.out.println("Token: " + token);
         logoutRequest.setToken(token);
         return gson.toJson(logoutRequest);
     }
 
-    private String login(Scanner scanner) {
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setOp("5");
-        System.out.println("User: ");
-        loginRequest.setUser(scanner.nextLine());
-        System.out.println("Password: ");
-        loginRequest.setPassword(scanner.nextLine());
-        return gson.toJson(loginRequest);
+    public String readAccount(String user) {
+        ReadAccountRequest readAccountRequest = new ReadAccountRequest();
+        readAccountRequest.setOp("2");
+        readAccountRequest.setUser(user);
+        readAccountRequest.setToken(token);
+        return gson.toJson(readAccountRequest);
+    }
+
+    public String updateAccount(String user, String password, String name) {
+        UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest();
+        updateAccountRequest.setOp("3");
+        updateAccountRequest.setUser(user);
+        updateAccountRequest.setPassword(password);
+        updateAccountRequest.setName(name);
+        updateAccountRequest.setToken(token);
+        return gson.toJson(updateAccountRequest);
+    }
+
+    public String deleteAccount(String user) {
+        DeleteAccountRequest deleteAccountRequest = new DeleteAccountRequest();
+        deleteAccountRequest.setOp("4");
+        deleteAccountRequest.setUser(user);
+        deleteAccountRequest.setToken(token);
+        return gson.toJson(deleteAccountRequest);
+    }
+
+    public String createCategory(String name, String description) {
+        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest();
+        createCategoryRequest.setOp("7");
+        createCategoryRequest.setToken(token);
+        Category category = new Category();
+        category.setName(name);
+        category.setDescription(description);
+        createCategoryRequest.setCategories(List.of(category));
+        return gson.toJson(createCategoryRequest);
+    }
+
+    public String readCategory() {
+        ReadCategoryRequest readCategoryRequest = new ReadCategoryRequest();
+        readCategoryRequest.setOp("8");
+        readCategoryRequest.setToken(token);
+        return gson.toJson(readCategoryRequest);
+    }
+
+    public String updateCategory(String id, String name, String description) {
+        CreateCategoryRequest updateCategoryRequest = new CreateCategoryRequest();
+        updateCategoryRequest.setOp("9");
+        updateCategoryRequest.setToken(token);
+        Category category = new Category();
+        category.setId(id);
+        category.setName(name);
+        category.setDescription(description);
+        updateCategoryRequest.setCategories(List.of(category));
+        return gson.toJson(updateCategoryRequest);
+    }
+
+    public String deleteCategory(String id) {
+        DeleteCategoryRequest deleteCategoryRequest = new DeleteCategoryRequest();
+        deleteCategoryRequest.setOp("10");
+        deleteCategoryRequest.setToken(token);
+        deleteCategoryRequest.setCategoryIds(List.of(id));
+        return gson.toJson(deleteCategoryRequest);
     }
 
     private void processResponse(String response) {

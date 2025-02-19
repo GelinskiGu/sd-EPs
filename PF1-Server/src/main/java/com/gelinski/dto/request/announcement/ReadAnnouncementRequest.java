@@ -1,16 +1,13 @@
-package com.gelinski.dto.request;
+package com.gelinski.dto.request.announcement;
 
 import com.gelinski.dto.BaseRequestDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
-public class ReadAccountRequest extends BaseRequestDTO implements Serializable {
-    private String user;
+public class ReadAnnouncementRequest extends BaseRequestDTO implements Serializable {
     private String token;
 }

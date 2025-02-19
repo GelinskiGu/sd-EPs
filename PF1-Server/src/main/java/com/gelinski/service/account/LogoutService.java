@@ -1,7 +1,7 @@
 package com.gelinski.service.account;
 
 import com.gelinski.dto.enums.account.LogoutResponsesEnum;
-import com.gelinski.dto.request.LogoutRequest;
+import com.gelinski.dto.request.account.LogoutRequest;
 import com.gelinski.dto.response.account.LogoutResponse;
 
 import java.util.List;

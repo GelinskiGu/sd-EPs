@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class CategoryRepository {
@@ -24,6 +25,25 @@ public class CategoryRepository {
         } finally {
             DatabaseConfig.disconnect();
         }
+    }
+
+    public Optional<Category> getCategoryById(String id) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM category WHERE id = ?")) {
+            ps.setInt(1, Integer.parseInt(id));
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Category category = new Category();
+                category.setId(Long.toString(rs.getLong("id")));
+                category.setName(rs.getString("name"));
+                category.setDescription(rs.getString("description"));
+                return Optional.of(category);
+            }
+        } finally {
+            DatabaseConfig.disconnect();
+        }
+
+        return Optional.empty();
     }
 
     public List<Category> getCategories() throws SQLException {
