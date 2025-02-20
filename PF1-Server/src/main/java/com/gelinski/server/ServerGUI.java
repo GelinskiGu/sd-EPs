@@ -51,7 +51,7 @@ public class ServerGUI extends JFrame {
         usersPanel.setLayout(new BorderLayout());
         usersPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
-        JLabel usersLabel = new JLabel("Usuários conectados");
+        JLabel usersLabel = new JLabel("Usuários logados");
         usersPanel.add(usersLabel, BorderLayout.NORTH);
 
         JScrollPane comp = new JScrollPane(connectedUsersArea);
