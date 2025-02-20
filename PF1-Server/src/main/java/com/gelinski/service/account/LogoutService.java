@@ -5,9 +5,10 @@ import com.gelinski.dto.request.account.LogoutRequest;
 import com.gelinski.dto.response.account.LogoutResponse;
 
 import java.util.List;
+import java.util.Set;
 
 public class LogoutService {
-    public LogoutResponse logout(LogoutRequest request, List<String> loggedUsers) {
+    public LogoutResponse logout(LogoutRequest request, Set<String> loggedUsers) {
         if (Boolean.TRUE.equals(request.fieldsMissing())) {
             LogoutResponsesEnum fieldsMissing = LogoutResponsesEnum.FIELDS_MISSING;
             return getLogoutResponse(fieldsMissing);

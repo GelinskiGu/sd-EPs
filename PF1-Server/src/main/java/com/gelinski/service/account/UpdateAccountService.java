@@ -13,10 +13,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class UpdateAccountService {
 
-    public UpdateAccountResponse updateAccount(UpdateAccountRequest updateAccountRequest, List<String> loggedUsersToken) {
+    public UpdateAccountResponse updateAccount(UpdateAccountRequest updateAccountRequest, Set<String> loggedUsersToken) {
         if (updateAccountRequest.getUser().isEmpty()) {
             updateAccountRequest.setUser(updateAccountRequest.getToken());
         }

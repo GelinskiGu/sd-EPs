@@ -1,10 +1,12 @@
 package com.gelinski;
 
 import com.gelinski.dto.response.LoginResponse;
+import com.gelinski.util.ResponseFormatter;
 import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class ClientGUI extends JFrame {
     private ClientServerConnector connector;
@@ -21,6 +23,12 @@ public class ClientGUI extends JFrame {
     private JButton readCategoryButton;
     private JButton updateCategoryButton;
     private JButton deleteCategoryButton;
+    private JButton createAnnouncementButton;
+    private JButton readAnnouncementsButton;
+    private JButton updateAnnouncementButton;
+    private JButton deleteAnnouncementButton;
+    private JButton subscribeToCategoryButton;
+    private JButton unsubscribeFromCategoryButton;
     private Gson gson = new Gson();
 
     public ClientGUI() {
@@ -64,6 +72,12 @@ public class ClientGUI extends JFrame {
             readCategoryButton.setVisible(false);
             updateCategoryButton.setVisible(false);
             deleteCategoryButton.setVisible(false);
+            createAnnouncementButton.setVisible(false);
+            readAnnouncementsButton.setVisible(false);
+            updateAnnouncementButton.setVisible(false);
+            deleteAnnouncementButton.setVisible(false);
+            subscribeToCategoryButton.setVisible(false);
+            unsubscribeFromCategoryButton.setVisible(false);
             operationsPanel.setVisible(true);
         });
         connectionPanel.add(connectButton);
@@ -71,7 +85,7 @@ public class ClientGUI extends JFrame {
         mainPanel.add(connectionPanel, BorderLayout.NORTH);
 
         operationsPanel = new JPanel();
-        operationsPanel.setLayout(new GridLayout(10, 1, 10, 15));
+        operationsPanel.setLayout(new GridLayout(10, 2, 10, 15));
         operationsPanel.setVisible(false);
 
         registerButton = new JButton("Cadastrar usuário");
@@ -82,7 +96,7 @@ public class ClientGUI extends JFrame {
             String createAccountRequest = connector.createAccount(name, user, password);
             String response = connector.sendToServer(createAccountRequest);
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
+            ResponseFormatter.showFormattedMessage(response);
         });
         registerButton.setVisible(false);
         operationsPanel.add(registerButton);
@@ -96,15 +110,27 @@ public class ClientGUI extends JFrame {
             LoginResponse loginResponse = gson.fromJson(response, LoginResponse.class);
             connector.token = loginResponse.getToken();
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
-            logoutButton.setVisible(true);
-            readAccountButton.setVisible(true);
-            updateAccountButton.setVisible(true);
-            deleteAccountButton.setVisible(true);
-            createCategoryButton.setVisible(true);
-            readCategoryButton.setVisible(true);
-            updateCategoryButton.setVisible(true);
-            deleteCategoryButton.setVisible(true);
+            ResponseFormatter.showFormattedMessage(response);
+            if (Objects.equals(loginResponse.getResponse(), "000") || Objects.equals(loginResponse.getResponse(), "001")) {
+                logoutButton.setVisible(true);
+                readAccountButton.setVisible(true);
+                updateAccountButton.setVisible(true);
+                deleteAccountButton.setVisible(true);
+                createCategoryButton.setVisible(true);
+                readCategoryButton.setVisible(true);
+                updateCategoryButton.setVisible(true);
+                deleteCategoryButton.setVisible(true);
+                createAnnouncementButton.setVisible(true);
+                readAnnouncementsButton.setVisible(true);
+                updateAnnouncementButton.setVisible(true);
+                deleteAnnouncementButton.setVisible(true);
+                subscribeToCategoryButton.setVisible(true);
+                unsubscribeFromCategoryButton.setVisible(true);
+                String readAnnouncementsRequest = connector.readAnnouncements();
+                String response2 = connector.sendToServer(readAnnouncementsRequest);
+                System.out.println("RESPONSE: " + response2);
+                ResponseFormatter.showFormattedMessage(response2);
+            }
         });
         loginButton.setVisible(false);
         operationsPanel.add(loginButton);
@@ -114,7 +140,7 @@ public class ClientGUI extends JFrame {
             String logoutRequest = connector.logout();
             String response = connector.sendToServer(logoutRequest);
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
+            ResponseFormatter.showFormattedMessage(response);
         });
         logoutButton.setVisible(false);
         operationsPanel.add(logoutButton);
@@ -125,7 +151,7 @@ public class ClientGUI extends JFrame {
             String readAccountRequest = connector.readAccount(user);
             String response = connector.sendToServer(readAccountRequest);
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
+            ResponseFormatter.showFormattedMessage(response);
         });
         readAccountButton.setVisible(false);
         operationsPanel.add(readAccountButton);
@@ -138,7 +164,7 @@ public class ClientGUI extends JFrame {
             String updateAccountRequest = connector.updateAccount(user, password, name);
             String response = connector.sendToServer(updateAccountRequest);
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
+            ResponseFormatter.showFormattedMessage(response);
         });
         updateAccountButton.setVisible(false);
         operationsPanel.add(updateAccountButton);
@@ -149,7 +175,7 @@ public class ClientGUI extends JFrame {
             String deleteAccountRequest = connector.deleteAccount(user);
             String response = connector.sendToServer(deleteAccountRequest);
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
+            ResponseFormatter.showFormattedMessage(response);
         });
         deleteAccountButton.setVisible(false);
         operationsPanel.add(deleteAccountButton);
@@ -161,7 +187,7 @@ public class ClientGUI extends JFrame {
             String createCategoryRequest = connector.createCategory(name, description);
             String response = connector.sendToServer(createCategoryRequest);
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
+            ResponseFormatter.showFormattedMessage(response);
         });
         createCategoryButton.setVisible(false);
         operationsPanel.add(createCategoryButton);
@@ -171,7 +197,7 @@ public class ClientGUI extends JFrame {
             String readCategoryRequest = connector.readCategory();
             String response = connector.sendToServer(readCategoryRequest);
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
+            ResponseFormatter.showFormattedMessage(response);
         });
         readCategoryButton.setVisible(false);
         operationsPanel.add(readCategoryButton);
@@ -184,7 +210,7 @@ public class ClientGUI extends JFrame {
             String updateCategoryRequest = connector.updateCategory(id, name, description);
             String response = connector.sendToServer(updateCategoryRequest);
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
+            ResponseFormatter.showFormattedMessage(response);
         });
         updateCategoryButton.setVisible(false);
         operationsPanel.add(updateCategoryButton);
@@ -195,10 +221,81 @@ public class ClientGUI extends JFrame {
             String deleteCategoryRequest = connector.deleteCategory(id);
             String response = connector.sendToServer(deleteCategoryRequest);
             System.out.println("RESPONSE: " + response);
-            JOptionPane.showMessageDialog(null, "Resposta do servidor: " + response);
+            ResponseFormatter.showFormattedMessage(response);
         });
         deleteCategoryButton.setVisible(false);
         operationsPanel.add(deleteCategoryButton);
+
+        createAnnouncementButton = new JButton("Criar aviso");
+        createAnnouncementButton.addActionListener(e -> {
+            String title = JOptionPane.showInputDialog("Título do aviso:");
+            String text = JOptionPane.showInputDialog("Texto do aviso:");
+            String categoryId = JOptionPane.showInputDialog("ID da categoria:");
+            String createAnnouncementRequest = connector.createAnnouncement(title, text, categoryId);
+
+            String response = connector.sendToServer(createAnnouncementRequest);
+            System.out.println("RESPONSE: " + response);
+            ResponseFormatter.showFormattedMessage(response);
+        });
+        createAnnouncementButton.setVisible(false);
+        operationsPanel.add(createAnnouncementButton);
+
+        readAnnouncementsButton = new JButton("Ler avisos");
+        readAnnouncementsButton.addActionListener(e -> {
+            String readAnnouncementsRequest = connector.readAnnouncements();
+            String response = connector.sendToServer(readAnnouncementsRequest);
+            System.out.println("RESPONSE: " + response);
+            ResponseFormatter.showFormattedMessage(response);
+        });
+        readAnnouncementsButton.setVisible(false);
+        operationsPanel.add(readAnnouncementsButton);
+
+        updateAnnouncementButton = new JButton("Atualizar aviso");
+        updateAnnouncementButton.addActionListener(e -> {
+            String id = JOptionPane.showInputDialog("ID do aviso:");
+            String title = JOptionPane.showInputDialog("Título do aviso:");
+            String text = JOptionPane.showInputDialog("Texto do aviso:");
+            String categoryId = JOptionPane.showInputDialog("ID da categoria:");
+            String updateAnnouncementRequest = connector.updateAnnouncements(id, title, text, categoryId);
+            String response = connector.sendToServer(updateAnnouncementRequest);
+            System.out.println("RESPONSE: " + response);
+            ResponseFormatter.showFormattedMessage(response);
+        });
+        updateAnnouncementButton.setVisible(false);
+        operationsPanel.add(updateAnnouncementButton);
+
+        deleteAnnouncementButton = new JButton("Deletar aviso");
+        deleteAnnouncementButton.addActionListener(e -> {
+            String id = JOptionPane.showInputDialog("ID do aviso:");
+            String deleteAnnouncementRequest = connector.deleteAnnouncements(id);
+            String response = connector.sendToServer(deleteAnnouncementRequest);
+            System.out.println("RESPONSE: " + response);
+            ResponseFormatter.showFormattedMessage(response);
+        });
+        deleteAnnouncementButton.setVisible(false);
+        operationsPanel.add(deleteAnnouncementButton);
+
+        subscribeToCategoryButton = new JButton("Inscrever-se em categoria");
+        subscribeToCategoryButton.addActionListener(e -> {
+            String categoryId = JOptionPane.showInputDialog("ID da categoria:");
+            String subscribeToCategoryRequest = connector.subscribeToCategory(categoryId);
+            String response = connector.sendToServer(subscribeToCategoryRequest);
+            System.out.println("RESPONSE: " + response);
+            ResponseFormatter.showFormattedMessage(response);
+        });
+        subscribeToCategoryButton.setVisible(false);
+        operationsPanel.add(subscribeToCategoryButton);
+
+        unsubscribeFromCategoryButton = new JButton("Desinscrever-se de categoria");
+        unsubscribeFromCategoryButton.addActionListener(e -> {
+            String categoryId = JOptionPane.showInputDialog("ID da categoria:");
+            String unsubscribeFromCategoryRequest = connector.unsubscribeToCategory(categoryId);
+            String response = connector.sendToServer(unsubscribeFromCategoryRequest);
+            System.out.println("RESPONSE: " + response);
+            ResponseFormatter.showFormattedMessage(response);
+        });
+        unsubscribeFromCategoryButton.setVisible(false);
+        operationsPanel.add(unsubscribeFromCategoryButton);
 
         mainPanel.add(operationsPanel, BorderLayout.CENTER);
         add(mainPanel);

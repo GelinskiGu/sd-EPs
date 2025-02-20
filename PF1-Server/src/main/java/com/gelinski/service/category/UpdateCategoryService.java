@@ -14,10 +14,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class UpdateCategoryService {
-    public UpdateCategoryResponse updateCategory(CreateCategoryRequest request, List<String> loggedUsersToken) {
+    public UpdateCategoryResponse updateCategory(CreateCategoryRequest request, Set<String> loggedUsersToken) {
         if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, request.getToken()))) {
             return getUpdateCategoryResponse(UpdateCategoryEnum.INVALID_TOKEN);
         }

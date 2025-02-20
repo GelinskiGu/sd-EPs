@@ -1,3 +1,4 @@
+/*
 package com.gelinski;
 
 import com.gelinski.server.ServerSocketCommunicationService;
@@ -11,4 +12,4 @@ public class ServerApplication {
         ServerSocketCommunicationService serverSocketCommunicationService = new ServerSocketCommunicationService();
         serverSocketCommunicationService.startServer();
     }
-}
+}*/

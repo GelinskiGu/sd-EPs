@@ -2,13 +2,8 @@ package com.gelinski.server;
 
 import com.gelinski.dto.BaseRequestDTO;
 import com.gelinski.dto.BaseResponseDTO;
-import com.gelinski.dto.enums.account.DeleteAccountEnum;
-import com.gelinski.dto.enums.account.ReadAccountEnum;
-import com.gelinski.dto.enums.account.UpdateAccountEnum;
-import com.gelinski.dto.enums.category.CreateCategoryEnum;
-import com.gelinski.dto.enums.category.DeleteCategoryEnum;
-import com.gelinski.dto.enums.category.ReadCategoryEnum;
-import com.gelinski.dto.enums.category.UpdateCategoryEnum;
+import com.gelinski.dto.enums.account.LoginResponsesEnum;
+import com.gelinski.dto.enums.account.LogoutResponsesEnum;
 import com.gelinski.dto.request.account.*;
 import com.gelinski.dto.request.announcement.CreateAnnouncementRequest;
 import com.gelinski.dto.request.announcement.DeleteAnnouncementRequest;
@@ -38,17 +33,20 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 public class ClientHandler implements Runnable {
     private static final Gson gson = new Gson();
     private final Socket clientSocket;
-    private final List<String> loggedUsers;
+    private final Set<String> loggedUsers;
+    private final Server server;
 
-    public ClientHandler(Socket clientSocket, List<String> loggedUsers) {
+    public ClientHandler(Socket clientSocket, Set<String> loggedUsers, Server server) {
         this.clientSocket = clientSocket;
         this.loggedUsers = loggedUsers;
+        this.server = server;
     }
 
     @Override
@@ -67,7 +65,8 @@ public class ClientHandler implements Runnable {
                 BaseResponseDTO response = gson.fromJson(res, BaseResponseDTO.class);
                 if (Objects.equals(response.getResponse(), "130")) {
                     DeleteAccountRequest deleteAccountRequest = gson.fromJson(inputLine, DeleteAccountRequest.class);
-                    if (deleteAccountRequest.getUser().equals(loggedUsers.get(0)) || deleteAccountRequest.getUser().isEmpty()) {
+                    Optional<String> first = loggedUsers.stream().filter(loggedUser -> Objects.equals(loggedUser, deleteAccountRequest.getUser())).findFirst();
+                    if (first.isPresent() || deleteAccountRequest.getUser().isEmpty()) {
                         break;
                     }
                 }
@@ -114,12 +113,18 @@ public class ClientHandler implements Runnable {
             case "5" -> {
                 LoginService loginService = new LoginService();
                 LoginResponse response = loginService.login(gson.fromJson(message, LoginRequest.class));
-                loggedUsers.add(response.getToken());
+                if (Objects.equals(response.getResponse(), LoginResponsesEnum.NORMAL_USER_SUCCESSFUL_LOGIN.getCode()) || Objects.equals(response.getResponse(), LoginResponsesEnum.ADMIN_USER_SUCCESSFUL_LOGIN.getCode())) {
+                    loggedUsers.add(response.getToken());
+                    server.updateConnectedUsersArea();
+                }
                 yield gson.toJson(response);
             }
             case "6" -> {
                 LogoutService logoutService = new LogoutService();
                 LogoutResponse response = logoutService.logout(gson.fromJson(message, LogoutRequest.class), loggedUsers);
+                if (Objects.equals(response.getResponse(), LogoutResponsesEnum.SUCCESSFUL_LOGOUT.getCode())) {
+                    server.updateConnectedUsersArea();
+                }
                 yield gson.toJson(response);
             }
             case "7" -> {

@@ -14,9 +14,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class UpdateAnnouncementService {
-    public BaseResponseDTO updateAnnouncement(UpdateAnnouncementRequest request, List<String> loggedUsersToken) {
+    public BaseResponseDTO updateAnnouncement(UpdateAnnouncementRequest request, Set<String> loggedUsersToken) {
         if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, request.getToken()))) {
             return getUpdateAnnouncementResponse(UpdateAnnouncementEnum.INVALID_TOKEN);
         }

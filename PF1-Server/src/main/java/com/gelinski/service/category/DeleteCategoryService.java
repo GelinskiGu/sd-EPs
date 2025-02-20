@@ -14,10 +14,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class DeleteCategoryService {
 
-    public DeleteCategoryResponse deleteCategory(DeleteCategoryRequest request, List<String> loggedUsersToken) {
+    public DeleteCategoryResponse deleteCategory(DeleteCategoryRequest request, Set<String> loggedUsersToken) {
         if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, request.getToken()))) {
             return getDeleteCategoryResponse(DeleteCategoryEnum.INVALID_TOKEN);
         }

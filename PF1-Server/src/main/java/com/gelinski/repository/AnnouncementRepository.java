@@ -1,6 +1,7 @@
 package com.gelinski.repository;
 
 import com.gelinski.config.DatabaseConfig;
+import com.gelinski.entity.AccountCategory;
 import com.gelinski.entity.Announcement;
 import lombok.RequiredArgsConstructor;
 
@@ -48,6 +49,25 @@ public class AnnouncementRepository {
         } finally {
             DatabaseConfig.disconnect();
         }
+    }
+
+    public Optional<AccountCategory> getAccountCategory(String accountId, String categoryId) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT account_category.* FROM account_category WHERE accountId = ? AND categoryId = ?")) {
+            ps.setInt(1, Integer.parseInt(accountId));
+            ps.setInt(2, Integer.parseInt(categoryId));
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                AccountCategory accountCategory = new AccountCategory();
+                accountCategory.setAccountId(rs.getInt("accountId"));
+                accountCategory.setCategoryId(rs.getInt("categoryId"));
+                return Optional.of(accountCategory);
+            }
+        } finally {
+            DatabaseConfig.disconnect();
+        }
+        return Optional.empty();
     }
 
     public Optional<Announcement> getAnnouncementById(String id) throws SQLException {

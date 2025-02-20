@@ -13,10 +13,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class ReadAccountService {
 
-    public ReadAccountResponse readAccount(ReadAccountRequest readAccountRequest, List<String> loggedUsersToken) {
+    public ReadAccountResponse readAccount(ReadAccountRequest readAccountRequest, Set<String> loggedUsersToken) {
         if (readAccountRequest.getUser().isEmpty()) {
             readAccountRequest.setUser(readAccountRequest.getToken());
         }

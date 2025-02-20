@@ -1,3 +1,4 @@
+/*
 package com.gelinski.server;
 
 
@@ -24,7 +25,7 @@ public class ServerSocketCommunicationService {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Connection successful");
 
-                ClientHandler clientHandler = new ClientHandler(clientSocket, loggedUsers);
+                ClientHandler clientHandler = new ClientHandler(clientSocket, loggedUsers, );
                 new Thread(clientHandler).start();
             }
         } catch (IOException e) {
@@ -33,3 +34,4 @@ public class ServerSocketCommunicationService {
         }
     }
 }
+*/

@@ -14,9 +14,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class ReadAnnouncementService {
-    public ReadAnnouncementResponse readAnnouncement(ReadAnnouncementRequest request, List<String> loggedUsersToken) {
+    public ReadAnnouncementResponse readAnnouncement(ReadAnnouncementRequest request, Set<String> loggedUsersToken) {
         if (Objects.isNull(loggedUsersToken) || loggedUsersToken.isEmpty() || loggedUsersToken.stream().noneMatch(loggedUser -> Objects.equals(loggedUser, request.getToken()))) {
             return getReadAnnouncementsResponse(ReadAnnouncementEnum.INVALID_TOKEN, new ReadAnnouncementResponse());
         }
@@ -30,10 +31,6 @@ public class ReadAnnouncementService {
             return getReadAnnouncementsResponse(ReadAnnouncementEnum.UNKNOWN_ERROR, new ReadAnnouncementResponse());
         }
         if (loggedUser.isEmpty()) {
-            return getReadAnnouncementsResponse(ReadAnnouncementEnum.INVALID_TOKEN, new ReadAnnouncementResponse());
-        }
-
-        if (Boolean.FALSE.equals(loggedUser.get().getIsAdmin())) {
             return getReadAnnouncementsResponse(ReadAnnouncementEnum.INVALID_TOKEN, new ReadAnnouncementResponse());
         }
 

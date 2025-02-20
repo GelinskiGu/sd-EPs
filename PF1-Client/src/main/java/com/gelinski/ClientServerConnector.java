@@ -1,6 +1,7 @@
 package com.gelinski;
 
 import com.gelinski.dto.request.*;
+import com.gelinski.dto.request.announcement.*;
 import com.gelinski.dto.request.category.Category;
 import com.gelinski.dto.request.category.CreateCategoryRequest;
 import com.gelinski.dto.request.category.DeleteCategoryRequest;
@@ -254,12 +255,55 @@ public class ClientServerConnector {
         return gson.toJson(deleteCategoryRequest);
     }
 
-    private void processResponse(String response) {
-        if(Objects.isNull(response)) {
-            System.out.println("ERROR: Null Response");
-            return;
-        }
+    public String createAnnouncement(String title, String text, String categoryId) {
+        CreateAnnouncementRequest createAnnouncementRequest = new CreateAnnouncementRequest();
+        createAnnouncementRequest.setOp("11");
+        createAnnouncementRequest.setToken(token);
+        createAnnouncementRequest.setTitle(title);
+        createAnnouncementRequest.setText(text);
+        createAnnouncementRequest.setCategoryId(categoryId);
+        return gson.toJson(createAnnouncementRequest);
+    }
 
-        System.out.println("RESPONSE: " + response);
+    public String readAnnouncements() {
+        ReadAnnouncementsRequest readAnnouncementsRequest = new ReadAnnouncementsRequest();
+        readAnnouncementsRequest.setOp("12");
+        readAnnouncementsRequest.setToken(token);
+        return gson.toJson(readAnnouncementsRequest);
+    }
+
+    public String updateAnnouncements(String id, String title, String text, String categoryId) {
+        UpdateAnnouncementRequest updateAnnouncementRequest = new UpdateAnnouncementRequest();
+        updateAnnouncementRequest.setOp("13");
+        updateAnnouncementRequest.setToken(token);
+        updateAnnouncementRequest.setId(id);
+        updateAnnouncementRequest.setTitle(title);
+        updateAnnouncementRequest.setText(text);
+        updateAnnouncementRequest.setCategoryId(categoryId);
+        return gson.toJson(updateAnnouncementRequest);
+    }
+
+    public String deleteAnnouncements(String id) {
+        DeleteAnnouncementRequest deleteAnnouncementRequest = new DeleteAnnouncementRequest();
+        deleteAnnouncementRequest.setOp("14");
+        deleteAnnouncementRequest.setToken(token);
+        deleteAnnouncementRequest.setId(id);
+        return gson.toJson(deleteAnnouncementRequest);
+    }
+
+    public String subscribeToCategory(String categoryId) {
+        SubscribeToCategoryRequest subscribeToCategoryRequest = new SubscribeToCategoryRequest();
+        subscribeToCategoryRequest.setOp("15");
+        subscribeToCategoryRequest.setToken(token);
+        subscribeToCategoryRequest.setCategoryId(categoryId);
+        return gson.toJson(subscribeToCategoryRequest);
+    }
+
+    public String unsubscribeToCategory(String categoryId) {
+        UnsubscribeToCategoryRequest unsubscribeToCategoryRequest = new UnsubscribeToCategoryRequest();
+        unsubscribeToCategoryRequest.setOp("16");
+        unsubscribeToCategoryRequest.setToken(token);
+        unsubscribeToCategoryRequest.setCategoryId(categoryId);
+        return gson.toJson(unsubscribeToCategoryRequest);
     }
 }
